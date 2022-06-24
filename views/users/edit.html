@@ -44,23 +44,20 @@
     </nav>
     <div class="card">
         <div class="card-header">
-            Danh sách người dùng
+            Cập nhật thông tin
         </div>
         <div class="card-body">
-            <a href="/users/create" class="btn btn-primary">Thêm mới</a>
-            <table class="table">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {list-user}
-                </tbody>
-            </table>
+            <form method="post" action="/users/edit?id={user_id}">
+                <div class="form-group">
+                    <label>Name</label>
+                    {input-name}
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    {input-email}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
     </div>
 </div>

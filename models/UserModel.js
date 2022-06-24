@@ -83,6 +83,30 @@ class UserModel {
         })
     }
 
+    findUserByID(userId) {
+        return new Promise(((resolve, reject) => {
+            let sql = `SELECT * FROM users WHERE id = ${userId}`;
+            this.conn.query(sql, (err, data) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(data)
+            })
+        }))
+    }
+
+    updateUser(name, userId) {
+        return new Promise(((resolve, reject) => {
+            let sql = `UPDATE users SET name = '${name}' WHERE id = ${userId}`;
+            this.conn.query(sql, (err, data) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(data)
+            })
+        }))
+    }
+
 }
 
 module.exports = UserModel;

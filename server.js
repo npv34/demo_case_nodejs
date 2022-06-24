@@ -1,5 +1,6 @@
-const http = require('http')
-const url = require('url')
+const http = require('http');
+const qs = require('qs');
+const url = require('url');
 let UserController = require('./controllers/UserController')
 let AuthController = require('./controllers/AuthController')
 
@@ -26,6 +27,20 @@ const server = http.createServer((req, res) => {
                     userContr.add(req, res)
                 }
                 break;
+            case '/users/edit':
+                //lay id tren url
+                let queryUrl = url.parse(req.url).query;
+                let id = qs.parse(queryUrl).id;
+                console.log(id)
+
+                if (req.method === 'GET') {
+                    userContr.showFormEdit('./views/users/edit.html', req, res, id)
+                } else if (req.method === 'POST') {
+                    userContr.edit(req, res, id)
+                }
+
+                break;
+
             case '/login':
                 authContr.login(req, res);
                 break;

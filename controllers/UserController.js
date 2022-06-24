@@ -20,6 +20,7 @@ class UserController {
                     html += `<td>${index + 1}</td>`;
                     html += `<td>${user.name}</td>`;
                     html += `<td>${user.email}</td>`;
+                    html += `<td><a href="/users/edit?id=${user.id}" class="btn btn-primary">Edit</a></td>`;
                     html += `</tr>`;
                 })
                 data = data.replace('{list-user}', html)
@@ -72,6 +73,47 @@ class UserController {
         })
 
     }
-}
+
+    showFormEdit(pathFile, req, res, idUser) {
+        this.userModel.findUserByID(idUser)
+            .then(result => {
+                console.log(result)
+                fs.readFile(pathFile, 'utf8', (err, data) => {
+                    if (err) {
+                        throw new Error(err.message)
+                    }
+
+                    data = data.replace('{input-name}', `<input type="text" name="name" class="form-control" value="${result[0].name}" placeholder="Enter name">`)
+                    data = data.replace('{input-email}', `<input type="email" disabled="disabled" class="form-control" value="${result[0].email}">`)
+                    data = data.replace('{user_id}', `${result[0].id}`)
+
+                    res.writeHead(200, 'success', {'Content-type': 'text/html'})
+                    res.write(data)
+                    res.end()
+                })
+            })
+
+
+
+
+    }
+
+    edit(req, res, idUser) {
+        let data = '';
+        req.on('data', chunk => {
+            data += chunk
+        })
+
+        req.on('end', () => {
+            let dataFromEdit = qs.parse(data);
+
+            this.userModel.updateUser(dataFromEdit.name, idUser)
+
+            res.writeHead(301, {Location: '/users'})
+            res.end()
+        })
+
+    }
+ }
 
 module.exports = UserController;
